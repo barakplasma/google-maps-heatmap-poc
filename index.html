@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Heatmaps</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+	       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 40%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: "Roboto", "sans-serif";
+        line-height: 30px;
+        padding-left: 10px;
+      }
+
+      #floating-panel {
+        background-color: #fff;
+        border: 1px solid #999;
+        left: 25%;
+        padding: 5px;
+        position: absolute;
+        top: 10px;
+        z-index: 5;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="floating-panel">floating panel</div>
+    <div id="map"></div>
+    <script>
+      var map, heatmap;
+      function initMap() {
+        var sanFrancisco = new google.maps.LatLng(37.782, -122.447);
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: sanFrancisco,
+          zoom: 15,
+          mapTypeId: "satellite"
+        });
+        /*
+		Data points defined as a mixture of WeightedLocation and LatLng objects */ var heatMapData = [
+          { location: new google.maps.LatLng(37.782, -122.447), weight: 0.5 },
+          new google.maps.LatLng(37.782, -122.445),
+          { location: new google.maps.LatLng(37.782, -122.443), weight: 2 },
+          { location: new google.maps.LatLng(37.782, -122.441), weight: 3 },
+          { location: new google.maps.LatLng(37.782, -122.439), weight: 2 },
+          new google.maps.LatLng(37.782, -122.437),
+          { location: new google.maps.LatLng(37.782, -122.435), weight: 0.5 },
+          { location: new google.maps.LatLng(37.785, -122.447), weight: 3 },
+          { location: new google.maps.LatLng(37.785, -122.445), weight: 2 },
+          new google.maps.LatLng(37.785, -122.443),
+          { location: new google.maps.LatLng(37.785, -122.441), weight: 0.5 },
+          new google.maps.LatLng(37.785, -122.439),
+          { location: new google.maps.LatLng(37.785, -122.437), weight: 2 },
+          { location: new google.maps.LatLng(37.785, -122.435), weight: 3 }
+        ];
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+          data: heatMapData,
+          dissipating: true,
+          radius: 50
+        });
+        heatmap.setMap(map);
+
+        var imageBounds = {
+          north: 37.83,
+          south: 37.77,
+          east: -122.42,
+          west: -122.448
+        };
+        historicalOverlay = new google.maps.GroundOverlay(
+          "https://uploads.codesandbox.io/uploads/user/fdb1ca11-4eb4-42a4-b6fa-f4af82962d88/_WoX-Hamilton-1st-Floor.png",
+          imageBounds
+        );
+        historicalOverlay.setMap(map);
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?&libraries=visualization&callback=initMap"
+    ></script>
+  </body>
+</html>
